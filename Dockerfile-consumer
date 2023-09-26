@@ -1,0 +1,11 @@
+FROM puckel/docker-airflow:latest
+
+
+
+RUN pip install --no-cache-dir pandas apache-airflow psycopg2-binary plotly dash --trusted-host pypi.org --trusted-host files.pythonhosted.org
+
+WORKDIR /app/
+
+COPY data /app
+
+COPY consumer.py dash_dag.py dash_app.py /usr/local/airflow/dags/

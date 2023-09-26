@@ -1,0 +1,36 @@
+version: '3'
+services:
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile-consumer
+    ports:
+      - "9090:8080"
+      - "8050:8050"
+    volumes:
+      - ./data:/app/data
+
+    depends_on:
+      - producer
+      - db
+
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile-producer
+    volumes:
+      - ./data:/app/data
+
+  db:
+    image: postgres:latest
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    
+    ports:
+      - '5432:5432'
+
+
